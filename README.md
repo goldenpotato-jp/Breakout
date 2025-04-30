@@ -4,5 +4,5 @@
  このプロジェクト[Pyxel](https://github.com/kitao/pyxel)を使って作られたブロック崩しゲームです。
 
 ## 🛠 使用技術・ライブラリ
--[python 3.7.4](https://www.python.org/)
+-[python 3.7.4](https://www.python.org/)  
 -[pyxel 2.1.8](https://github.com/kitao/pyxel)
