@@ -1,5 +1,6 @@
 import pyxel
 
+game_start_frame = 0
 game_state = "TITLE"
 
 #pyxel edit "/Users/macbook/goldenpotato/python/Breakout/v1.0/my_resource.pyxres"
@@ -17,8 +18,10 @@ def draw():
 	elif(game_state == "PLAY"):draw_play_state()
 
 def update_title_state():
-	global game_state
-	if(pyxel.btn(pyxel.KEY_SPACE)):game_state = "PLAY"
+	global game_start_frame, game_state
+	if(pyxel.btn(pyxel.KEY_SPACE)):
+		game_state = "PLAY"
+		game_start_frame = pyxel.frame_count
 
 def update_play_state():
 	pass
