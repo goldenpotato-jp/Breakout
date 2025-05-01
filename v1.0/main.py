@@ -34,6 +34,12 @@ def draw_title_state():
 	pyxel.text(30, 80, "Press [Esc] to quit", 13)
 
 def draw_play_state():
+	pyxel.cls(1)
+	if(pyxel.frame_count - game_start_frame < 100):
+		pyxel.text(30, 30, "test", 8)
+		draw_countdown()
+
+def draw_countdown():
 	pass
 
 pyxel.run(update, draw)
