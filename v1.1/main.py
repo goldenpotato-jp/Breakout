@@ -20,6 +20,7 @@ paddle = Paddle(0, 0, 30, 5)
 
 game_start_frame = 0
 game_state = "TITLE"
+version = "v1.1"
 
 #pyxel edit "/Users/macbook/goldenpotato/python/Breakout/v1.1/my_resource.pyxres"
 
@@ -34,6 +35,7 @@ def draw():
 	pyxel.cls(0)
 	if(game_state == "TITLE"):draw_title_state()
 	elif(game_state == "PLAY"):draw_play_state()
+	pyxel.text(140, 110, version, 13)
 
 def update_title_state():
 	global game_start_frame, game_state
