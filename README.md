@@ -10,6 +10,7 @@
 ### 🔗リンク
 - Youtube : [GoldenPotato](https://www.youtube.com/@GoldenPotato-jp)
 - X : [GoldenPotato](https://x.com/GoldenPotatoJP)
+- プレイリスト : [ブロック崩し](https://www.youtube.com/playlist?list=PL19PnukweuV7n2m9Hb5-684deBH8FeJWo)
 
 ## 画面イメージ
 
