@@ -10,3 +10,7 @@
 ### 🔗リンク
 - Youtube : [GoldenPotato](https://www.youtube.com/@GoldenPotato-jp)
 - X : [GoldenPotato](https://x.com/GoldenPotatoJP)
+
+## 画面イメージ
+
+![v1.0タイトル画面](images/スクリーンショット%202025-04-30%2019.06.17.jpg)
