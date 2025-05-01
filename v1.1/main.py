@@ -11,7 +11,7 @@ class Paddle:
 		pass
 
 	def draw_paddle(self):
-		pass
+		pyxel.rect(self.x, self.y, self.width, self.height)
 
 game_start_frame = 0
 game_state = "TITLE"
