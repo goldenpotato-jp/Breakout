@@ -7,10 +7,10 @@ class Paddle:
 		self.width = width
 		self.height = height
 
-	def update_paddle():
+	def update_paddle(self):
 		pass
 
-	def draw_paddle():
+	def draw_paddle(self):
 		pass
 
 game_start_frame = 0
