@@ -13,6 +13,10 @@ class Paddle:
 	def draw_paddle(self):
 		pyxel.rect(self.x, self.y, self.width, self.height)
 
+	def set_to_center(self, y):
+		self.y = y
+		self.x = (pyxel.width / 2) - (self.width / 2)
+
 game_start_frame = 0
 game_state = "TITLE"
 
