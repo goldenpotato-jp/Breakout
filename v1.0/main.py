@@ -35,11 +35,13 @@ def draw_title_state():
 
 def draw_play_state():
 	pyxel.cls(1)
-	if(pyxel.frame_count - game_start_frame < 100):
-		pyxel.text(30, 30, "test", 8)
-		draw_countdown()
+	if(pyxel.frame_count - game_start_frame < 240):
+		draw_countdown(pyxel.frame_count - game_start_frame)
 
-def draw_countdown():
-	pass
+def draw_countdown(t):
+	if(t < 60):pyxel.text(78, 60, "3", 11)
+	elif(t < 120):pyxel.text(78, 60, "2", 10)
+	elif(t < 180):pyxel.text(78, 60, "1", 9)
+	else:pyxel.text(76, 60, "Go!", 8)
 
 pyxel.run(update, draw)
