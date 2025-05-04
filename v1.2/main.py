@@ -11,6 +11,9 @@ class Paddle:
 	def update_paddle(self):
 		if(pyxel.btn(pyxel.KEY_A) or pyxel.btn(pyxel.KEY_LEFT)):self.x -= self.speed
 		if(pyxel.btn(pyxel.KEY_D) or pyxel.btn(pyxel.KEY_RIGHT)):self.x += self.speed
+		if(self.x < 0):self.x = 0
+		elif(self.x > pyxel.width - self.width):self.x = pyxel.width - self.width
+
 
 	def draw_paddle(self):
 		pyxel.rect(self.x, self.y, self.width, self.height, 7)
