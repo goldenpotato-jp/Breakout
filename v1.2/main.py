@@ -22,7 +22,7 @@ paddle = Paddle(0, 0, 30, 5, 3)
 
 game_start_frame = 0
 game_state = "TITLE"
-version = "v1.1"
+version = "v1.2"
 
 #pyxel edit "/Users/macbook/goldenpotato/python/Breakout/v1.1/my_resource.pyxres"
 
