@@ -35,6 +35,10 @@ class Ball:
 
 	def draw_ball(self):
 		pyxel.rect(self.x, self.y, self.size, self.size, 10)
+
+	def set_to_center(self, y):
+		self.y = y
+		self.x = (pyxel.width / 2) - (self.size / 2)
 ball = Ball(0, 0, 4, 3)
 
 game_start_frame = 0
@@ -62,6 +66,7 @@ def update_title_state():
 		game_state = "PLAY"
 		game_start_frame = pyxel.frame_count
 		paddle.set_to_center(100)
+		ball.set_to_center(90)
 
 def update_play_state():
 	if(pyxel.frame_count - game_start_frame > 240):
