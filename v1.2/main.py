@@ -23,6 +23,19 @@ class Paddle:
 		self.x = (pyxel.width / 2) - (self.width / 2)
 paddle = Paddle(0, 0, 30, 5, 3)
 
+class Ball:
+	def __init__(self, x, y, size, speed):
+		self.x = x
+		self.y = y
+		self.size = size
+		self.speed = speed
+
+	def update_ball(self):
+		pass
+
+	def draw_ball(self):
+		pass
+
 game_start_frame = 0
 game_state = "TITLE"
 version = "v1.2"
