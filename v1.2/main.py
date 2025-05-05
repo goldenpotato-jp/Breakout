@@ -34,7 +34,8 @@ class Ball:
 		pass
 
 	def draw_ball(self):
-		pass
+		pyxel.rect(self.x, self.y, self.size, self.size, 10)
+ball = Ball(0, 0, 4, 3)
 
 game_start_frame = 0
 game_state = "TITLE"
@@ -78,6 +79,7 @@ def draw_play_state():
 	if(pyxel.frame_count - game_start_frame < 240):
 		draw_countdown(pyxel.frame_count - game_start_frame)
 	paddle.draw_paddle()
+	ball.draw_ball()
 
 def draw_countdown(t):
 	if(t < 60):pyxel.text(78, 60, "3", 11)
