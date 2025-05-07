@@ -33,6 +33,9 @@ class Ball:
 		self.y_speed = -speed
 
 	def update_ball(self):
+		if(self.x <= 0 or self.x >= pyxel.width - self.size):self.x_speed *= -1
+		if(self.y <= 0):self.y_speed *= -1
+		if(paddle.x - self.size < self.x < paddle.x + paddle.width and paddle.y >= self.y >= paddle.y - self.size and self.y_speed > 0):self.y_speed *= -1
 		self.x += self.x_speed
 		self.y += self.y_speed
 
