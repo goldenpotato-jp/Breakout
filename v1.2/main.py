@@ -88,6 +88,7 @@ def draw_title_state():
 
 def draw_play_state():
 	pyxel.cls(1)
+	pyxel.mouse(False)
 	if(pyxel.frame_count - game_start_frame < 240):
 		draw_countdown(pyxel.frame_count - game_start_frame)
 	paddle.draw_paddle()
