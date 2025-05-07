@@ -51,10 +51,10 @@ game_start_frame = 0
 game_state = "TITLE"
 version = "v1.2"
 
-#pyxel edit "/Users/macbook/goldenpotato/python/Breakout/v1.1/my_resource.pyxres"
+#pyxel edit "/Users/macbook/goldenpotato/python/Breakout/v1.2/my_resource.pyxres"
 
 pyxel.init(160, 120, title = "Breakout")
-pyxel.load("/Users/macbook/goldenpotato/python/Breakout/v1.1/my_resource.pyxres")
+pyxel.load("/Users/macbook/goldenpotato/python/Breakout/v1.2/my_resource.pyxres")
 
 def update():
 	if(game_state == "TITLE"):update_title_state()
