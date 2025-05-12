@@ -1,5 +1,14 @@
 import pyxel
 
+game_start_frame = 0
+game_state = "TITLE"
+version = "v1.2"
+
+#pyxel edit "/Users/macbook/goldenpotato/python/Breakout/v1.2/my_resource.pyxres"
+
+pyxel.init(160, 120, title = "Breakout")
+pyxel.load("/Users/macbook/goldenpotato/python/Breakout/v1.2/my_resource.pyxres")
+
 class Paddle:
 	def __init__(self, x, y, width, height, speed):
 		self.x = x
@@ -47,14 +56,29 @@ class Ball:
 		self.x = (pyxel.width / 2) - (self.size / 2)
 ball = Ball(0, 0, 4, 2)
 
-game_start_frame = 0
-game_state = "TITLE"
-version = "v1.2"
+class Block:
+	def __init__(self, x, y, width, height, col):
+		self.x = x
+		self.y = y
+		self.width = width
+		self.height = height
+		self.col = col
 
-#pyxel edit "/Users/macbook/goldenpotato/python/Breakout/v1.2/my_resource.pyxres"
+	def update_block(self):
+		pass
 
-pyxel.init(160, 120, title = "Breakout")
-pyxel.load("/Users/macbook/goldenpotato/python/Breakout/v1.2/my_resource.pyxres")
+	def draw_block(self):
+		pyxel.rect(self.x, self.y, self.width, self.height, self.col)
+		pyxel.rectb(self.x, self.y, self.width, self.height, 5)
+block_width = 20
+block_height = 10
+block_col = 12
+block_width_number = int(pyxel.width / block_width)
+block_height_number = 6
+blocks = []
+for i in range(block_height_number):
+	for j in range(block_width_number):
+		blocks.append(Block(block_width * j, block_height * i, block_width, block_height, block_col))
 
 def update():
 	if(game_state == "TITLE"):update_title_state()
@@ -93,6 +117,8 @@ def draw_play_state():
 		draw_countdown(pyxel.frame_count - game_start_frame)
 	paddle.draw_paddle()
 	ball.draw_ball()
+	for b in blocks:
+		b.draw_block()
 
 def draw_countdown(t):
 	if(t < 60):pyxel.text(78, 60, "3", 11)
