@@ -44,10 +44,10 @@ class Ball:
 	def update_ball(self):
 		is_bound_x, is_bound_y = False, False
 		for b in blocks:
-			if(check_box_xline(b.x, b.y + b.height, b.width, self.x, self.y, self.size, self.size) and self.y_speed < 0):is_bound_y = True
-			if(check_box_xline(b.x, b.y, b.width, self.x, self.y, self.size, self.size) and self.y_speed > 0):is_bound_y = True
-			if(check_box_yline(b.x, b.y, b.height, self.x, self.y, self.size, self.size) and self.x_speed > 0):is_bound_x = True
-			if(check_box_yline(b.x + b.width, b.y, b.height, self.x, self.y, self.size, self.size) and self.x_speed < 0):is_bound_x = True
+			if(check_box_xline(b.x, b.y + b.height, b.width, self.x, self.y, self.size, self.size)):is_bound_y = True
+			if(check_box_xline(b.x, b.y, b.width, self.x, self.y, self.size, self.size)):is_bound_y = True
+			if(check_box_yline(b.x, b.y, b.height, self.x, self.y, self.size, self.size)):is_bound_x = True
+			if(check_box_yline(b.x + b.width, b.y, b.height, self.x, self.y, self.size, self.size)):is_bound_x = True
 		if(self.x <= 0 or self.x >= pyxel.width - self.size):self.x_speed *= -1
 		if(self.y <= 0):self.y_speed *= -1
 		if(is_bound_x):self.x_speed *= -1
