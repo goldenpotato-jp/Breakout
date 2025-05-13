@@ -42,6 +42,11 @@ class Ball:
 		self.y_speed = -speed
 
 	def update_ball(self):
+		for b in blocks:
+			if(b.x - self.size <= self.x <= b.x + b.width and b.y + b.height - self.size <= self.y <= b.y + b.height and self.y_speed < 0):self.y_speed *= -1
+			if(b.x - self.size <= self.x <= b.x + b.width and b.y - self.size <= self.y <= b.y and self.y_speed > 0):self.y_speed *= -1
+			if(b.x - self.size <= self.x <= b.x and b.y - self.size <= self.y <= b.y + self.size and self.x_speed > 0):self.x_speed *= -1
+			if(b.x + b.width - self.size <= self.x <= b.x + b.width and b.y - self.size <= self.y <= b.y + self.size and self.x_speed < 0):self.x_speed *= -1
 		if(self.x <= 0 or self.x >= pyxel.width - self.size):self.x_speed *= -1
 		if(self.y <= 0):self.y_speed *= -1
 		if(paddle.x - self.size < self.x < paddle.x + paddle.width and paddle.y >= self.y >= paddle.y - self.size and self.y_speed > 0):self.y_speed *= -1
@@ -102,6 +107,11 @@ def update_play_state():
 	if(pyxel.frame_count - game_start_frame > 240):
 		paddle.update_paddle()
 		ball.update_ball()
+	for b in blocks:
+		if(b.x - ball.size <= ball.x <= b.x + b.width and b.y + b.height - ball.size <= ball.y <= b.y + b.height and ball.y_speed < 0):blocks.remove(b)
+		elif(b.x - ball.size <= ball.x <= b.x + b.width and b.y - ball.size <= ball.y <= b.y and ball.y_speed > 0):blocks.remove(b)
+		elif(b.x - ball.size <= ball.x <= b.x and b.y - ball.size <= ball.y <= b.y + ball.size and ball.x_speed > 0):blocks.remove(b)
+		elif(b.x + b.width - ball.size <= ball.x <= b.x + b.width and b.y - ball.size <= ball.y <= b.y + ball.size and ball.x_speed < 0):blocks.remove(b)
 
 def draw_title_state():
 	pyxel.cls(1)
