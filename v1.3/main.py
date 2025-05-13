@@ -2,7 +2,7 @@ import pyxel
 
 game_start_frame = 0
 game_state = "TITLE"
-version = "v1.2"
+version = "v1.3"
 
 #pyxel edit "/Users/macbook/goldenpotato/python/Breakout/v1.2/my_resource.pyxres"
 
@@ -42,14 +42,17 @@ class Ball:
 		self.y_speed = -speed
 
 	def update_ball(self):
+		is_bound_x, is_bound_y = False, False
 		for b in blocks:
-			if(b.x - self.size <= self.x <= b.x + b.width and b.y + b.height - self.size <= self.y <= b.y + b.height and self.y_speed < 0):self.y_speed *= -1
-			if(b.x - self.size <= self.x <= b.x + b.width and b.y - self.size <= self.y <= b.y and self.y_speed > 0):self.y_speed *= -1
-			if(b.x - self.size <= self.x <= b.x and b.y - self.size <= self.y <= b.y + self.size and self.x_speed > 0):self.x_speed *= -1
-			if(b.x + b.width - self.size <= self.x <= b.x + b.width and b.y - self.size <= self.y <= b.y + self.size and self.x_speed < 0):self.x_speed *= -1
+			if(check_box_xline(b.x, b.y + b.height, b.width, self.x, self.y, self.size, self.size) and self.y_speed < 0):is_bound_y = True
+			if(check_box_xline(b.x, b.y, b.width, self.x, self.y, self.size, self.size) and self.y_speed > 0):is_bound_y = True
+			if(check_box_yline(b.x, b.y, b.height, self.x, self.y, self.size, self.size) and self.x_speed > 0):is_bound_x = True
+			if(check_box_yline(b.x + b.width, b.y, b.height, self.x, self.y, self.size, self.size) and self.x_speed < 0):is_bound_x = True
 		if(self.x <= 0 or self.x >= pyxel.width - self.size):self.x_speed *= -1
 		if(self.y <= 0):self.y_speed *= -1
-		if(paddle.x - self.size < self.x < paddle.x + paddle.width and paddle.y >= self.y >= paddle.y - self.size and self.y_speed > 0):self.y_speed *= -1
+		if(is_bound_x):self.x_speed *= -1
+		if(is_bound_y):self.y_speed *= -1
+		if(check_box_xline(paddle.x, paddle.y, paddle.width, self.x, self.y, self.size, self.size)):self.y_speed *= -1
 		self.x += self.x_speed
 		self.y += self.y_speed
 
@@ -81,6 +84,7 @@ block_col = 12
 block_width_number = int(pyxel.width / block_width)
 block_height_number = 6
 blocks = []
+remove_blocks = []
 for i in range(block_height_number):
 	for j in range(block_width_number):
 		blocks.append(Block(block_width * j, block_height * i, block_width, block_height, block_col))
@@ -104,14 +108,14 @@ def update_title_state():
 		ball.set_to_center(90)
 
 def update_play_state():
-	if(pyxel.frame_count - game_start_frame > 240):
+	if(pyxel.frame_count - game_start_frame > 30):
 		paddle.update_paddle()
 		ball.update_ball()
+	for b in remove_blocks:
+		blocks.remove(b)
+		remove_blocks.remove(b)
 	for b in blocks:
-		if(b.x - ball.size <= ball.x <= b.x + b.width and b.y + b.height - ball.size <= ball.y <= b.y + b.height and ball.y_speed < 0):blocks.remove(b)
-		elif(b.x - ball.size <= ball.x <= b.x + b.width and b.y - ball.size <= ball.y <= b.y and ball.y_speed > 0):blocks.remove(b)
-		elif(b.x - ball.size <= ball.x <= b.x and b.y - ball.size <= ball.y <= b.y + ball.size and ball.x_speed > 0):blocks.remove(b)
-		elif(b.x + b.width - ball.size <= ball.x <= b.x + b.width and b.y - ball.size <= ball.y <= b.y + ball.size and ball.x_speed < 0):blocks.remove(b)
+		if(check_box(b.x, b.y, b.width, b.height, ball.x, ball.y, ball.size, ball.size)):remove_blocks.append(b)
 
 def draw_title_state():
 	pyxel.cls(1)
@@ -135,5 +139,16 @@ def draw_countdown(t):
 	elif(t < 120):pyxel.text(78, 60, "2", 10)
 	elif(t < 180):pyxel.text(78, 60, "1", 9)
 	else:pyxel.text(76, 60, "Go!", 8)
+
+def check_box(x1, y1, w1, h1, x2, y2, w2, h2):
+	if(x1 + w1 < x2 or x2 + w2 < x1): return False
+	if(y1 + h1 < y2 or y2 + h2 < y1): return False
+	return True
+
+def check_box_xline(x1, y1, w1, x2, y2, w2, h2):
+	return y2 <= y1 <= y2 + h2 and(x2 <= x1 <= x2 + w2 or x1 + w1 >= x2 >= x1)
+
+def check_box_yline(x1, y1, h1, x2, y2, w2, h2):
+	return (y2 <= y1 <= y2 + h2 or y1 + h1 >= y2 >= y1)and x2 <= x1 <= x2 + w2
 
 pyxel.run(update, draw)
