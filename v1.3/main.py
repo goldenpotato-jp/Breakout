@@ -116,11 +116,7 @@ def update_play_state():
 		paddle.update_paddle()
 		ball.update_ball()
 	for b in blocks:
-		if(b.level == 0):
-			blocks.remove(b)
-			block_number -= 1
-		else:
-			b.update_block()
+		b.update_block()
 
 def draw_title_state():
 	pyxel.cls(1)
