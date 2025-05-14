@@ -44,10 +44,10 @@ class Ball:
 	def update_ball(self):
 		is_bound_x, is_bound_y = False, False
 		for b in blocks:
-			if(check_box_xline(b.x, b.y + b.height, b.width, self.x, self.y, self.size, self.size)):is_bound_y = True
-			if(check_box_xline(b.x, b.y, b.width, self.x, self.y, self.size, self.size)):is_bound_y = True
-			if(check_box_yline(b.x, b.y, b.height, self.x, self.y, self.size, self.size)):is_bound_x = True
-			if(check_box_yline(b.x + b.width, b.y, b.height, self.x, self.y, self.size, self.size)):is_bound_x = True
+			if(check_box_xline(b.x, b.y + b.height, b.width, self.x, self.y, self.size, self.size) and self.y_speed < 0):is_bound_y = True
+			if(check_box_xline(b.x, b.y, b.width, self.x, self.y, self.size, self.size) and self.y_speed > 0):is_bound_y = True
+			if(check_box_yline(b.x, b.y, b.height, self.x, self.y, self.size, self.size) and self.x_speed > 0):is_bound_x = True
+			if(check_box_yline(b.x + b.width, b.y, b.height, self.x, self.y, self.size, self.size) and self.x_speed < 0):is_bound_x = True
 		if(self.x <= 0 or self.x >= pyxel.width - self.size):is_bound_x = True
 		if(self.y <= 0):is_bound_y = True
 		if(is_bound_x):self.x_speed *= -1
@@ -82,7 +82,7 @@ block_width = 20
 block_height = 10
 block_col = 12
 block_width_number = int(pyxel.width / block_width)
-block_height_number = 6
+block_height_number = 5
 block_number = block_width_number * block_height_number
 blocks = []
 remove_blocks = []
@@ -112,7 +112,7 @@ def update_title_state():
 
 def update_play_state():
 	global game_state, block_number
-	if(pyxel.frame_count - game_start_frame > 30):
+	if(pyxel.frame_count - game_start_frame > 240):
 		paddle.update_paddle()
 		ball.update_ball()
 	for b in remove_blocks:
