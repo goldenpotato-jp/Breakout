@@ -48,8 +48,8 @@ class Ball:
 			if(check_box_xline(b.x, b.y, b.width, self.x, self.y, self.size, self.size)):is_bound_y = True
 			if(check_box_yline(b.x, b.y, b.height, self.x, self.y, self.size, self.size)):is_bound_x = True
 			if(check_box_yline(b.x + b.width, b.y, b.height, self.x, self.y, self.size, self.size)):is_bound_x = True
-		if(self.x <= 0 or self.x >= pyxel.width - self.size):self.x_speed *= -1
-		if(self.y <= 0):self.y_speed *= -1
+		if(self.x <= 0 or self.x >= pyxel.width - self.size):is_bound_x = True
+		if(self.y <= 0):is_bound_y = True
 		if(is_bound_x):self.x_speed *= -1
 		if(is_bound_y):self.y_speed *= -1
 		if(check_box_xline(paddle.x, paddle.y, paddle.width, self.x, self.y, self.size, self.size)):self.y_speed *= -1
@@ -83,6 +83,7 @@ block_height = 10
 block_col = 12
 block_width_number = int(pyxel.width / block_width)
 block_height_number = 6
+block_number = block_width_number * block_height_number
 blocks = []
 remove_blocks = []
 for i in range(block_height_number):
@@ -92,11 +93,13 @@ for i in range(block_height_number):
 def update():
 	if(game_state == "TITLE"):update_title_state()
 	elif(game_state == "PLAY"):update_play_state()
+	elif(game_state == "GAMEOVER"):update_gameover_state()
 
 def draw():
 	pyxel.cls(0)
 	if(game_state == "TITLE"):draw_title_state()
 	elif(game_state == "PLAY"):draw_play_state()
+	elif(game_state == "GAMEOVER"):draw_gameover_state()
 	pyxel.text(140, 110, version, 13)
 
 def update_title_state():
@@ -108,14 +111,20 @@ def update_title_state():
 		ball.set_to_center(90)
 
 def update_play_state():
+	global game_state, block_number
 	if(pyxel.frame_count - game_start_frame > 30):
 		paddle.update_paddle()
 		ball.update_ball()
 	for b in remove_blocks:
 		blocks.remove(b)
 		remove_blocks.remove(b)
+		block_number -= 1
 	for b in blocks:
 		if(check_box(b.x, b.y, b.width, b.height, ball.x, ball.y, ball.size, ball.size)):remove_blocks.append(b)
+	if(ball.y > pyxel.height):game_state = "GAMEOVER"
+
+def update_gameover_state():
+	pass
 
 def draw_title_state():
 	pyxel.cls(1)
@@ -133,6 +142,10 @@ def draw_play_state():
 	ball.draw_ball()
 	for b in blocks:
 		b.draw_block()
+
+def draw_gameover_state():
+	pyxel.mouse(False)
+	pyxel.text(60, 60, "Gameover!", 8)
 
 def draw_countdown(t):
 	if(t < 60):pyxel.text(78, 60, "3", 11)
