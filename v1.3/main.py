@@ -71,9 +71,10 @@ class Block:
 		self.width = width
 		self.height = height
 		self.col = col
+		self.level = 1
 
 	def update_block(self):
-		pass
+		if(check_box(self.x, self.y, self.width, self.height, ball.x, ball.y, ball.size, ball.size)):self.level -= 1
 
 	def draw_block(self):
 		pyxel.rect(self.x, self.y, self.width, self.height, self.col)
@@ -112,15 +113,15 @@ def update_title_state():
 
 def update_play_state():
 	global game_state, block_number
-	if(pyxel.frame_count - game_start_frame > 240):
+	if(pyxel.frame_count - game_start_frame > 30):
 		paddle.update_paddle()
 		ball.update_ball()
-	for b in remove_blocks:
-		blocks.remove(b)
-		remove_blocks.remove(b)
-		block_number -= 1
 	for b in blocks:
-		if(check_box(b.x, b.y, b.width, b.height, ball.x, ball.y, ball.size, ball.size)):remove_blocks.append(b)
+		if(b.level == 0):
+			blocks.remove(b)
+			block_number -= 1
+		else:
+			b.update_block()
 	if(ball.y > pyxel.height):game_state = "GAMEOVER"
 
 def update_gameover_state():
