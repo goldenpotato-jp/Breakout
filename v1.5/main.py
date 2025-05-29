@@ -3,12 +3,11 @@ import random
 
 game_start_frame = 0
 game_over_frame = 0
-game_clear_frame = 0
+stage_clear_frame = 0
 game_state = "TITLE"
 version = "v1.5"
-score = 0
 stage_number = 0
-score_list = []
+score = 0
 
 #pyxel edit "/Users/macbook/goldenpotato/python/Breakout/v1.5/my_resource.pyxres"
 
@@ -71,7 +70,7 @@ class Ball:
 ball = None
 
 class Block:
-	def __init__(self, x, y, width, height, col, bcol, level):
+	def __init__(self, x, y, width, height, level):
 		self.x = x
 		self.y = y
 		self.width = width
@@ -104,8 +103,6 @@ class Block:
 		pyxel.rectb(self.x, self.y, self.width, self.height, self.bcol)
 block_width = 20
 block_height = 10
-block_col = 12
-block_bcol = 5
 block_count_x = int(pyxel.width / block_width)
 block_count_y = 4
 block_number = block_count_x * block_count_y
@@ -126,14 +123,14 @@ def draw():
 	pyxel.text(140, 110, version, 13)
 
 def update_title_state():
-	global game_start_frame, game_state, stage_number, score
+	global game_start_frame, game_state
 	if(pyxel.btn(pyxel.KEY_SPACE)):
 		game_state = "PLAY"
 		game_start_frame = pyxel.frame_count
 		reset_game()
 		
 def update_play_state():
-	global game_state, block_number, game_over_frame, game_clear_frame, score
+	global game_state, block_number, game_over_frame, stage_clear_frame, score
 	if(pyxel.frame_count - game_start_frame > 240):
 		paddle.update_paddle()
 		ball.update_ball()
@@ -147,21 +144,18 @@ def update_play_state():
 	if(ball.y > pyxel.height):
 		game_state = "GAMEOVER"
 		game_over_frame = pyxel.frame_count
-		score_list.append(score)
-		score_list.sort(reverse=True)
 	if(block_number == 0):
 		game_state = "STAGECLEAR"
-		game_clear_frame = pyxel.frame_count
+		stage_clear_frame = pyxel.frame_count
 
 def update_gameover_state():
 	global game_state
 	if(pyxel.frame_count - game_over_frame > 120):
 		game_state = "TITLE"
-		reset_game()
 
 def update_stageclear_state():
 	global game_state, game_start_frame
-	if(pyxel.frame_count - game_clear_frame > 120):
+	if(pyxel.frame_count - stage_clear_frame > 120):
 		game_state = "PLAY"
 		game_start_frame = pyxel.frame_count
 		next_stage()
@@ -186,19 +180,10 @@ def draw_play_state():
 	pyxel.text(5, 110, "Score: " + str(score), 7)
 
 def draw_gameover_state():
+	pyxel.cls(0)
 	pyxel.mouse(False)
 	pyxel.text(60, 50, "Gameover!", 8)
 	pyxel.text(60, 70, "Score: " + str(score), 7)
-	s = str(score_list.index(score) + 1)
-	if(s[-1] == "1"):s += "st"
-	elif(s[-1] == "2"):s += "nd"
-	elif(s[-1] == "3"):s += "rd"
-	else:s += "th"
-	col = 7
-	if(score_list.index(score) == 0):col = 8
-	elif(score_list.index(score) == 1):col = 9
-	elif(score_list.index(score) == 2):col = 10
-	pyxel.text(60, 90, s, col)
 
 def draw_stageclear_state():
 	pyxel.mouse(False)
@@ -235,15 +220,14 @@ def reset_game():
 	blocks = []
 	for i in range(block_count_y):
 		for j in range(block_count_x):
-			blocks.append(Block(block_width * j, block_height * i, block_width, block_height, block_col, block_bcol, 1))
+			blocks.append(Block(block_width * j, block_height * i, block_width, block_height, 1))
 	for i in range(4):
 		blocks[random.randint(0, block_number - 1)].level += 1
 
 def next_stage():
-	global paddle, ball, blocks, block_number, score, stage_number
+	global paddle, ball, blocks, block_number, stage_number, score
 	stage_number += 1
-	paddle = Paddle(0, 0, 30, 5, 3)
-	paddle.width -= (stage_number - 1) * 2
+	paddle = Paddle(0, 0, max(30 - (stage_number - 1) * 2, 10), 5, 3)
 	ball = Ball(0, 0, 4, 2)
 	paddle.set_to_center(100)
 	ball.set_to_center(90)
@@ -251,7 +235,7 @@ def next_stage():
 	blocks = []
 	for i in range(block_count_y):
 		for j in range(block_count_x):
-			blocks.append(Block(block_width * j, block_height * i, block_width, block_height, block_col, block_bcol, 1))
+			blocks.append(Block(block_width * j, block_height * i, block_width, block_height, 1))
 	for i in range(stage_number * 4):
 		blocks[random.randint(0, block_number - 1)].level += 1
 	score += 1000
