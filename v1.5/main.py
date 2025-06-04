@@ -8,6 +8,8 @@ game_state = "TITLE"
 version = "v1.5"
 stage_number = 0
 score = 0
+high_score = 0
+total_blocks_destroyed = 0
 
 #pyxel edit "/Users/macbook/goldenpotato/python/Breakout/v1.5/my_resource.pyxres"
 
@@ -130,7 +132,7 @@ def update_title_state():
 		reset_game()
 		
 def update_play_state():
-	global game_state, block_number, game_over_frame, stage_clear_frame, score
+	global game_state, block_number, game_over_frame, stage_clear_frame, score, total_blocks_destroyed
 	if(pyxel.frame_count - game_start_frame > 240):
 		paddle.update_paddle()
 		ball.update_ball()
@@ -139,6 +141,7 @@ def update_play_state():
 			blocks.remove(b)
 			block_number -= 1
 			score += 50
+			total_blocks_destroyed += 1
 		else:
 			b.update_block()
 	if(ball.y > pyxel.height):
@@ -149,9 +152,11 @@ def update_play_state():
 		stage_clear_frame = pyxel.frame_count
 
 def update_gameover_state():
-	global game_state
+	global game_state, high_score
 	if(pyxel.frame_count - game_over_frame > 120):
 		game_state = "TITLE"
+		if(score > high_score):
+			high_score = score
 
 def update_stageclear_state():
 	global game_state, game_start_frame
@@ -166,6 +171,8 @@ def draw_title_state():
 	pyxel.text(30, 30, "Breakout", 10)
 	pyxel.text(30, 60, "Press [Space] to start", 7)
 	pyxel.text(30, 80, "Press [Esc] to quit", 13)
+	pyxel.text(5, 110, "High Score: " + str(high_score), 7)
+	pyxel.text(5, 100, "Blocks Destroyed: " + str(total_blocks_destroyed), 7)
 
 def draw_play_state():
 	pyxel.cls(1)
@@ -184,6 +191,8 @@ def draw_gameover_state():
 	pyxel.mouse(False)
 	pyxel.text(60, 50, "Gameover!", 8)
 	pyxel.text(60, 70, "Score: " + str(score), 7)
+	if(score > high_score):
+		pyxel.text(50, 90, "New High Score!", 10)
 
 def draw_stageclear_state():
 	pyxel.mouse(False)
@@ -226,6 +235,7 @@ def reset_game():
 
 def next_stage():
 	global paddle, ball, blocks, block_number, stage_number, score
+	score += 1000
 	stage_number += 1
 	paddle = Paddle(0, 0, max(30 - (stage_number - 1) * 2, 10), 5, 3)
 	ball = Ball(0, 0, 4, 2)
@@ -238,6 +248,5 @@ def next_stage():
 			blocks.append(Block(block_width * j, block_height * i, block_width, block_height, 1))
 	for i in range(stage_number * 4):
 		blocks[random.randint(0, block_number - 1)].level += 1
-	score += 1000
 
 pyxel.run(update, draw)
